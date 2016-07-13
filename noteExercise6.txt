@@ -1,0 +1,59 @@
+In the existing "Myanmar's Attraction" App,
+- fCreate a Navigation View as Left Menu.
+- fOn the header of the Left Menu, there should be two buttons to let the user navigate to Login screen & Registration screen.
+- There should only be one button if the device is tablet. Both Login screen & Registration screen should show together in Tablet device.
+- fCreate the screen for Login.
+- fCreate the screen for Registration.
+- fLogin screen and Registration screen should show separately in Phone. But, those two should together in Tablet.
+
+- When the user tap “Login” button, the App should navigate to Login Screen.
+- When the user do the Login by filling email & password, the App should connect to the “login.php” API.
+- The App should check if the user fill up both email and password when he press “Login” button. If not, the user should be communicated about this.
+- If the login fails, the App should communicate the error to the user.
+- If the login succeed, the App will receive full user information (Name, Email, Access Token, Date-of-Birth, Country-of-Origin) from the “login.php” API.
+- Those full user information should be kept in Persistent Layer of the App.
+- After the user successfully login, the App should navigate to the home screen of the App. In the header of the Left Menu, the App should display Name, Email and Dummy Profile Image. There should be a “Logout” button.
+- When the user tap “Logout” button, all the user information should be delete from Persistent Layer. In the header of the Left menu, there will only be two buttons (one if device is tablet) letting the user navigate to Login screen & Registration screen respectively.
+
+- When the user tap “Register” button, the App should navigate to Registration Screen.
+- When the user fill up all the required information (Name, Email, Date-Of-Birth, Country-of-Origin) and press “Register” button, the App should connect to the “register.php” API.
+- The App should check if the user fill up all the information when he press “Register” button. If not, the user should be communicated about this.
+- If the registration fails (email is already registered), the App should communicate the error to the user.
+- If the registration succeed, the App will receive full user information (Name, Email, Access Token, Date-of-Birth, Country-of-Origin) from the “register.php” API.
+- Those full user information should be kept in Persistent Layer of the App.
+- After the user successfully register, the App should navigate to the home screen of the App. In the header of the Left Menu, the App should display Name, Email and Dummy Profile Image. There should be a “Logout” button.
+
+{
+  "code": 200,
+  "message": "Login succcess",
+  "login_user": {
+    "name": "John Doe",
+    "email": "john.doe@mymail.com",
+    "access_token": "b002c7e1a528b7cb460933fc2875e916",
+    "date_of_birth": "1988-10-24",
+    "country_of_origin": "Myanmar"
+  }
+}
+
+invalid email
+{
+  "code": 401,
+  "message": "The email is not being registered."
+}
+
+{
+  "code": 401,
+  "message": "Missing required inputs for the request."
+}
+
+{
+  "code": 200,
+  "message": "Registration succcess",
+  "login_user": {
+    "name": "John Doe",
+    "email": "john.doe@mymail.com",
+    "access_token": "b002c7e1a528b7cb460933fc2875e916",
+    "date_of_birth": "1988-10-24",
+    "country_of_origin": "Myanmar"
+  }
+}
