@@ -7,7 +7,7 @@ import org.json.JSONException;
 import java.io.IOException;
 import java.io.InputStream;
 
-import xyz.sainumtown.padc_week6.PADC_WEEK5_APP;
+import xyz.sainumtown.padc_week6.PADC_WEEK6_APP;
 
 /**
  * Created by aung on 12/12/15.
@@ -29,7 +29,7 @@ public class JsonUtils {
     }
 
     private JsonUtils() {
-        context = PADC_WEEK5_APP.getContext();
+        context = PADC_WEEK6_APP.getContext();
     }
 
     /**

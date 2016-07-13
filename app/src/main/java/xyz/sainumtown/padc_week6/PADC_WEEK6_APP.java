@@ -6,7 +6,7 @@ import android.content.Context;
 /**
  * Created by User on 7/8/2016.
  */
-public class PADC_WEEK5_APP extends Application {
+public class PADC_WEEK6_APP extends Application {
     private static Context context;
 
     @Override

@@ -7,7 +7,7 @@ import android.view.ViewGroup;
 
 import java.util.List;
 
-import xyz.sainumtown.padc_week6.PADC_WEEK5_APP;
+import xyz.sainumtown.padc_week6.PADC_WEEK6_APP;
 import xyz.sainumtown.padc_week6.R;
 import xyz.sainumtown.padc_week6.datas.vos.AttractionVO;
 import xyz.sainumtown.padc_week6.fragments.AttractionFragment;
@@ -23,7 +23,7 @@ public class AttractionAdapter extends RecyclerView.Adapter<AttractionViewHolder
     private AttractionFragment.ControllerAttractionItem mAttractionItemController;
 
     public AttractionAdapter(List<AttractionVO> attractionList, AttractionFragment.ControllerAttractionItem controllerAttractionItem) {
-        inflater = LayoutInflater.from(PADC_WEEK5_APP.getContext());
+        inflater = LayoutInflater.from(PADC_WEEK6_APP.getContext());
         this.attractionList = attractionList;
         mAttractionItemController = controllerAttractionItem;
     }

@@ -9,7 +9,7 @@ import android.view.MenuItem;
 import android.view.SubMenu;
 import android.widget.TextView;
 
-import xyz.sainumtown.padc_week6.PADC_WEEK5_APP;
+import xyz.sainumtown.padc_week6.PADC_WEEK6_APP;
 
 /**
  * Created by aung on 6/25/16.
@@ -18,7 +18,7 @@ public class MMFontUtils {
 
     private static Typeface mmTypeFace;
     static {
-        Context context = PADC_WEEK5_APP.getContext();
+        Context context = PADC_WEEK6_APP.getContext();
         mmTypeFace = Typeface.createFromAsset(context.getAssets(), "fonts/Zawgyi.ttf");
     }
 

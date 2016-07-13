@@ -15,7 +15,7 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 
-import xyz.sainumtown.padc_week6.PADC_WEEK5_APP;
+import xyz.sainumtown.padc_week6.PADC_WEEK6_APP;
 import xyz.sainumtown.padc_week6.R;
 import xyz.sainumtown.padc_week6.datas.models.AttractionModel;
 import xyz.sainumtown.padc_week6.datas.vos.AttractionVO;
@@ -28,7 +28,7 @@ public class AttractionDetailActivity extends AppCompatActivity {
     private AttractionVO attraction;
 
     public static Intent newIntent(String title) {
-        Intent intent = new Intent(PADC_WEEK5_APP.getContext(), AttractionDetailActivity.class);
+        Intent intent = new Intent(PADC_WEEK6_APP.getContext(), AttractionDetailActivity.class);
         intent.putExtra(IE_ATTRACTION_TITLE, title);
         return intent;
     }

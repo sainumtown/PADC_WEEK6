@@ -11,7 +11,7 @@ import java.lang.reflect.Type;
 
 import java.util.List;
 
-import xyz.sainumtown.padc_week6.PADC_WEEK5_APP;
+import xyz.sainumtown.padc_week6.PADC_WEEK6_APP;
 import xyz.sainumtown.padc_week6.datas.vos.AttractionVO;
 import xyz.sainumtown.padc_week6.utils.CommonInstances;
 import xyz.sainumtown.padc_week6.utils.JsonUtils;
@@ -41,7 +41,7 @@ public class AttractionModel {
     }
 
     private List<AttractionVO> setUpInitialAttractions() {
-        Context context = PADC_WEEK5_APP.getContext();
+        Context context = PADC_WEEK6_APP.getContext();
 
         try {
             String dummyAttractionList = JsonUtils.getInstance().loadDummyData(DUMMY_ATTRACTIOIN_LIST);
