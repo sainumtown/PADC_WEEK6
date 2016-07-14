@@ -9,6 +9,7 @@ import android.content.Context;
 public class PADC_WEEK6_APP extends Application {
     private static Context context;
 
+    public static final String TAG = "MyanmarAttractionsApp";
     @Override
     public void onCreate() {
         super.onCreate();

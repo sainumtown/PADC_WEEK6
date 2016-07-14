@@ -45,4 +45,9 @@ public class AttractionAdapter extends RecyclerView.Adapter<AttractionViewHolder
     public int getItemCount() {
         return attractionList.size();
     }
+
+    public void setNewData(List<AttractionVO> newAttractionList) {
+        attractionList = newAttractionList;
+        notifyDataSetChanged();
+    }
 }

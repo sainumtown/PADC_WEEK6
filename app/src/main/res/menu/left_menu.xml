@@ -4,14 +4,14 @@
         android:checkableBehavior="single">
 
         <item
-            android:id="@+id/left_menu_linkIn"
+            android:id="@+id/left_menu_attractions"
             android:checked="true"
             android:icon="@drawable/ic_home_black_24dp"
             android:title="@string/Attractions"
             />
 
         <item
-            android:id="@+id/left_menu_book"
+            android:id="@+id/left_menu_setting"
             android:icon="@drawable/ic_settings_black_24dp"
             android:title="@string/settings"/>
 

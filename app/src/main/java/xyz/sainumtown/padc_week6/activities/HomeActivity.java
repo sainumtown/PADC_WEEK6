@@ -1,17 +1,23 @@
 package xyz.sainumtown.padc_week6.activities;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.ActivityOptionsCompat;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.util.Pair;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -21,8 +27,15 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import java.util.List;
+
+import butterknife.BindView;
+import de.greenrobot.event.EventBus;
 import xyz.sainumtown.padc_week6.R;
+import xyz.sainumtown.padc_week6.adapters.AttractionAdapter;
+import xyz.sainumtown.padc_week6.datas.models.AttractionModel;
 import xyz.sainumtown.padc_week6.datas.vos.AttractionVO;
+import xyz.sainumtown.padc_week6.events.DataEvent;
 import xyz.sainumtown.padc_week6.fragments.AttractionFragment;
 import xyz.sainumtown.padc_week6.fragments.LoginFragment;
 import xyz.sainumtown.padc_week6.fragments.RegisterFragment;
@@ -32,6 +45,22 @@ public class HomeActivity extends AppCompatActivity implements AttractionFragmen
     DrawerLayout drawerLayout;
     NavigationView navigationView;
     FrameLayout fl2;
+    private AttractionAdapter mAttractionAdapter;
+    @BindView(R.id.rv_attractions)
+    RecyclerView rvAttractions;
+
+
+    private BroadcastReceiver mDataLoadedBroadcastReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            //TODO instructions when the new data is ready.
+            String extra = intent.getStringExtra("key-for-extra");
+            Toast.makeText(getApplicationContext(), "Extra : " + extra, Toast.LENGTH_SHORT).show();
+
+            List<AttractionVO> newAttractionList = AttractionModel.getInstance().getAttractionList();
+            mAttractionAdapter.setNewData(newAttractionList);
+        }
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,11 +82,11 @@ public class HomeActivity extends AppCompatActivity implements AttractionFragmen
         navigationView.setNavigationItemSelectedListener(this);
 
         AttractionFragment fragment = AttractionFragment.newInstance();
+
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.fl_container, fragment)
                 .commit();
 
-        fl2 = (FrameLayout) findViewById(R.id.fl_container_2);
 
         // btn regsiter click
         Button btnRegister = (Button) findViewById(R.id.btn_register);
@@ -67,6 +96,20 @@ public class HomeActivity extends AppCompatActivity implements AttractionFragmen
         // btn login click
         Button btnLogin = (Button) findViewById(R.id.btn_login);
         btnLogin.setOnClickListener(this);
+
+        // control two panels hide process
+        fl2 = (FrameLayout) findViewById(R.id.fl_container_2);
+        if (fl2 != null) {
+            btnRegister.setText(R.string.lbl_login_register);
+            btnLogin.setVisibility(View.GONE);
+        }
+
+        List<AttractionVO> attractionList = AttractionModel.getInstance().getAttractionList();
+        mAttractionAdapter = new AttractionAdapter(attractionList, this);
+        rvAttractions.setAdapter(mAttractionAdapter);
+
+        int gridColumnSpanCount = 1;
+        rvAttractions.setLayoutManager(new GridLayoutManager(getApplicationContext(), gridColumnSpanCount));
     }
 
     @Override
@@ -114,11 +157,14 @@ public class HomeActivity extends AppCompatActivity implements AttractionFragmen
             @Override
             public void run() {
                 switch (menuItem.getItemId()) {
-                    case R.id.left_menu_linkIn:
+                    case R.id.left_menu_attractions:
                         AttractionFragment fragment = AttractionFragment.newInstance();
                         getSupportFragmentManager().beginTransaction()
                                 .replace(R.id.fl_container, fragment)
                                 .commit();
+                        if (fl2 != null) {
+                            fl2.setVisibility(View.GONE);
+                        }
                         break;
 
                 }
@@ -161,5 +207,36 @@ public class HomeActivity extends AppCompatActivity implements AttractionFragmen
                     break;
             }
         }
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        LocalBroadcastManager.getInstance(this).registerReceiver(mDataLoadedBroadcastReceiver, new IntentFilter(AttractionModel.BROADCAST_DATA_LOADED));
+
+        EventBus eventBus = EventBus.getDefault();
+        if (!eventBus.isRegistered(this)) {
+            eventBus.register(this);
+        }
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        LocalBroadcastManager.getInstance(this).unregisterReceiver(mDataLoadedBroadcastReceiver);
+
+        EventBus eventBus = EventBus.getDefault();
+        eventBus.unregister(this);
+    }
+
+
+
+    public void onEventMainThread(DataEvent.AttractionDataLoadedEvent event) {
+        String extra = event.getExtraMessage();
+        Toast.makeText(getApplicationContext(), "Extra : "+extra, Toast.LENGTH_SHORT).show();
+
+        //List<AttractionVO> newAttractionList = AttractionModel.getInstance().getAttractionList();
+        List<AttractionVO> newAttractionList = event.getAttractionList();
+        mAttractionAdapter.setNewData(newAttractionList);
     }
 }

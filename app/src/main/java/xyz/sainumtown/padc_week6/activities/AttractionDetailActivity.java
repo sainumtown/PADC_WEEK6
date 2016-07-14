@@ -70,7 +70,7 @@ public class AttractionDetailActivity extends AppCompatActivity {
             String tsName = getResources().getString(R.string.share_element_transistion_attractioin);
             ivImage.setTransitionName(tsName);
         }
-        attraction = AttractionModel.getInstance().getAttractionByTitle(attractionTitle);
+        attraction = AttractionModel.getInstance().getAttractionByName(attractionTitle);
         if (attraction == null) {
             throw new RuntimeException("Can't find Attraction obj with the title : " + attractionTitle);
         } else {

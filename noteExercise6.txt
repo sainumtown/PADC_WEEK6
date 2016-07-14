@@ -1,12 +1,12 @@
 In the existing "Myanmar's Attraction" App,
 - fCreate a Navigation View as Left Menu.
 - fOn the header of the Left Menu, there should be two buttons to let the user navigate to Login screen & Registration screen.
-- There should only be one button if the device is tablet. Both Login screen & Registration screen should show together in Tablet device.
+- fThere should only be one button if the device is tablet. Both Login screen & Registration screen should show together in Tablet device.
 - fCreate the screen for Login.
 - fCreate the screen for Registration.
 - fLogin screen and Registration screen should show separately in Phone. But, those two should together in Tablet.
 
-- When the user tap “Login” button, the App should navigate to Login Screen.
+- fWhen the user tap “Login” button, the App should navigate to Login Screen.
 - When the user do the Login by filling email & password, the App should connect to the “login.php” API.
 - The App should check if the user fill up both email and password when he press “Login” button. If not, the user should be communicated about this.
 - If the login fails, the App should communicate the error to the user.

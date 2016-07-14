@@ -25,5 +25,6 @@
     <string name="lbl_username">User Name</string>
     <string name="lbl_password">Password</string>
     <string name="lbl_login">Login</string>
+    <string name="lbl_login_register">Register or Login</string>
 
 </resources>
