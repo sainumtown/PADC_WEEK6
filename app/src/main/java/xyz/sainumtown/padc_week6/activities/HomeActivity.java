@@ -160,6 +160,13 @@ public class HomeActivity extends AppCompatActivity implements AttractionViewHol
             btnLogout.setVisibility(View.GONE);
             btnLogin.setVisibility(View.VISIBLE);
             btnRegister.setVisibility(View.VISIBLE);
+
+            rvAttractions.setVisibility(View.GONE);
+            RegisterFragment fragment = RegisterFragment.newInstance();
+            getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.fl_container, fragment)
+                    .commit();
+
         }
         getSupportLoaderManager().initLoader(MyanmarAttractionsConstants.ATTRACTION_LIST_LOADER, null, this);
     }
@@ -198,13 +205,20 @@ public class HomeActivity extends AppCompatActivity implements AttractionViewHol
             public void run() {
                 switch (menuItem.getItemId()) {
                     case R.id.left_menu_attractions:
-                        rvAttractions.setVisibility(View.VISIBLE);
+                        if (getIntent().getExtras() == null) {
+                            RegisterFragment fragment = RegisterFragment.newInstance();
+                            getSupportFragmentManager().beginTransaction()
+                                    .replace(R.id.fl_container, fragment)
+                                    .commit();
+                            rvAttractions.setVisibility(View.GONE);
+                        } else {
+                            rvAttractions.setVisibility(View.VISIBLE);
+                        }
 
                         if (fl2 != null) {
                             fl2.setVisibility(View.GONE);
                         }
                         break;
-
                 }
             }
         }, 100); //to close drawer smoothly.

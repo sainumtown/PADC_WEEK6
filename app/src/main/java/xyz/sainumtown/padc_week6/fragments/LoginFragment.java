@@ -9,6 +9,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import butterknife.BindView;
@@ -31,6 +33,12 @@ public class LoginFragment extends Fragment {
 
     @BindView(R.id.btn_login2)
     Button btn_login;
+
+    @BindView(R.id.et_user_mail)
+    EditText etMail;
+
+    @BindView(R.id.et_password)
+    EditText etPassword;
 
     public static LoginFragment newInstance() {
 
@@ -55,7 +63,7 @@ public class LoginFragment extends Fragment {
             @Override
             public void onClick(View v) {
 
-                Call<UserResponse> userCall = RetrofitDataAgent.getInstance().getTheApi().userLogin("username@gmail.com", "saasi");
+                Call<UserResponse> userCall = RetrofitDataAgent.getInstance().getTheApi().userLogin(etMail.getText().toString(),etPassword.getText().toString());
                 userCall.enqueue(new Callback<UserResponse>() {
                     @Override
                     public void onResponse(Call<UserResponse> call, Response<UserResponse> response) {
