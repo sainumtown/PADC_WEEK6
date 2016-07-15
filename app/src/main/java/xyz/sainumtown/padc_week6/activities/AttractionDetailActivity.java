@@ -55,7 +55,7 @@ public class AttractionDetailActivity extends AppCompatActivity {
             public void onClick(View view) {
                 Intent sharingIntent = new Intent(android.content.Intent.ACTION_SEND);
                 sharingIntent.setType("text/plain");
-                String shareBody = "http://www.aungpyaephyo.xyz/myanmar_attractions/" + attraction.getImages().get(0).toString();
+                String shareBody = "http://www.aungpyaephyo.xyz/myanmar_attractions/" + attraction.getImages()[0].toString();
                 sharingIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, "Share Image");
                 sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, shareBody);
                 startActivity(Intent.createChooser(sharingIntent, "Share hhvia"));
@@ -83,7 +83,7 @@ public class AttractionDetailActivity extends AppCompatActivity {
             );
 
             Glide.with(ivImage.getContext())
-                    .load("http://www.aungpyaephyo.xyz/myanmar_attractions/" + attraction.getImages().get(0).toString())
+                    .load("http://www.aungpyaephyo.xyz/myanmar_attractions/" + attraction.getImages()[0].toString())
                     .centerCrop()
                     .placeholder(R.drawable.stock_photo_placeholder)
                     .into(ivImage);

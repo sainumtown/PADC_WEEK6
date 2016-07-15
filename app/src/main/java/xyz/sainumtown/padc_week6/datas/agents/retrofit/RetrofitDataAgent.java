@@ -10,7 +10,9 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 import xyz.sainumtown.padc_week6.datas.agents.AttractionDataAgent;
 import xyz.sainumtown.padc_week6.datas.models.AttractionModel;
+import xyz.sainumtown.padc_week6.datas.models.UserModel;
 import xyz.sainumtown.padc_week6.datas.responses.AttractionListResponse;
+import xyz.sainumtown.padc_week6.datas.responses.UserResponse;
 import xyz.sainumtown.padc_week6.utils.CommonInstances;
 import xyz.sainumtown.padc_week6.utils.MyanmarAttractionsConstants;
 
@@ -66,5 +68,27 @@ public class RetrofitDataAgent implements AttractionDataAgent {
                 AttractionModel.getInstance().notifyErrorInLoadingAttractions(throwable.getMessage());
             }
         });
+    }
+
+    @Override
+    public void userLogin(String email, String password) {
+        Call<UserResponse> userLoginCall = theApi.userLogin(email,password);
+        userLoginCall.enqueue(new Callback<UserResponse>() {
+            @Override
+            public void onResponse(Call<UserResponse> call, Response<UserResponse> response) {
+                UserResponse userResponse = response.body();
+                if(userResponse == null){
+                    UserModel.getInstance().notifyErrorInUserLogin(response.message());
+                }else{
+                    UserModel.getInstance().notifyUserLoginLoaded(userResponse.getUser());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<UserResponse> call, Throwable t) {
+                AttractionModel.getInstance().notifyErrorInLoadingAttractions(t.getMessage());
+            }
+        });
+
     }
 }

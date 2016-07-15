@@ -15,17 +15,24 @@ public class UserVO {
     @SerializedName("email")
     private String email;
 
+    @SerializedName("access_token")
+    private String accessToken;
+
     @SerializedName("date_of_birth")
     private String dateOfBirth;
 
     @SerializedName("country_of_origin")
     private String countryOfOrigin;
 
-    public UserVO(String name, String email, String dateOfBirth, String countryOfOrigin) {
+    public UserVO(String name, String email, String dateOfBirth, String countryOfOrigin, String accessToken) {
         this.name = name;
         this.email = email;
         this.dateOfBirth = dateOfBirth;
         this.countryOfOrigin = countryOfOrigin;
+        this.accessToken = accessToken;
+    }
+
+    public UserVO() {
     }
 
     public String getName() {
@@ -42,5 +49,9 @@ public class UserVO {
 
     public String getCountryOfOrigin() {
         return countryOfOrigin;
+    }
+
+    public String getAccessToken() {
+        return accessToken;
     }
 }

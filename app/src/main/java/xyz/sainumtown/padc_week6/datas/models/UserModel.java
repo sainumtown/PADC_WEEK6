@@ -9,6 +9,7 @@ import org.json.JSONException;
 import java.io.IOException;
 import java.lang.reflect.Type;
 import java.util.List;
+
 import com.google.gson.reflect.TypeToken;
 
 import org.json.JSONException;
@@ -16,9 +17,13 @@ import org.json.JSONException;
 import java.io.IOException;
 import java.lang.reflect.Type;
 
+import de.greenrobot.event.EventBus;
 import xyz.sainumtown.padc_week6.PADC_WEEK6_APP;
+import xyz.sainumtown.padc_week6.datas.agents.AttractionDataAgent;
+import xyz.sainumtown.padc_week6.datas.agents.retrofit.RetrofitDataAgent;
 import xyz.sainumtown.padc_week6.datas.vos.AttractionVO;
 import xyz.sainumtown.padc_week6.datas.vos.UserVO;
+import xyz.sainumtown.padc_week6.events.DataEvent;
 import xyz.sainumtown.padc_week6.utils.CommonInstances;
 import xyz.sainumtown.padc_week6.utils.JsonUtils;
 
@@ -35,6 +40,8 @@ public class UserModel {
         return user;
     }
 
+    private AttractionDataAgent dataAgent;
+
     public static UserModel getInstance() {
         if (objInstance == null) {
             objInstance = new UserModel();
@@ -43,10 +50,13 @@ public class UserModel {
     }
 
     public UserModel() {
-        user = setUpInitial();
+        user = new UserVO();
+        dataAgent = RetrofitDataAgent.getInstance();
     }
 
-    private UserVO setUpInitial() {
+
+
+   /* private UserVO setUpInitial() {
         Context context = PADC_WEEK6_APP.getContext();
         try {
             String dummyUser = JsonUtils.getInstance().loadDummyData(DUMMY_USER_DENIED);
@@ -58,5 +68,14 @@ public class UserModel {
             e.printStackTrace();
         }
         return user;
+    }*/
+
+    public void notifyErrorInUserLogin(String message) {
+
     }
+
+    public void notifyUserLoginLoaded(UserVO user) {
+        user = user;
+    }
+
 }

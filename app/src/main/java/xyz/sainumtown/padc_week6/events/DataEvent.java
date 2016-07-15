@@ -3,6 +3,7 @@ package xyz.sainumtown.padc_week6.events;
 import java.util.List;
 
 import xyz.sainumtown.padc_week6.datas.vos.AttractionVO;
+import xyz.sainumtown.padc_week6.datas.vos.UserVO;
 
 
 /**
@@ -27,4 +28,6 @@ public class DataEvent {
             return attractionList;
         }
     }
+
+    
 }

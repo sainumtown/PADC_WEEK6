@@ -10,7 +10,6 @@ import java.util.List;
 import xyz.sainumtown.padc_week6.PADC_WEEK6_APP;
 import xyz.sainumtown.padc_week6.R;
 import xyz.sainumtown.padc_week6.datas.vos.AttractionVO;
-import xyz.sainumtown.padc_week6.fragments.AttractionFragment;
 import xyz.sainumtown.padc_week6.views.holders.AttractionViewHolder;
 
 /**
@@ -18,36 +17,35 @@ import xyz.sainumtown.padc_week6.views.holders.AttractionViewHolder;
  */
 public class AttractionAdapter extends RecyclerView.Adapter<AttractionViewHolder> {
 
-    private LayoutInflater inflater;
-    private List<AttractionVO> attractionList;
-    private AttractionFragment.ControllerAttractionItem mAttractionItemController;
+    private LayoutInflater mInflater;
+    private List<AttractionVO> mAttractionList;
+    private AttractionViewHolder.ControllerAttractionItem mControllerAttractionItem;
 
-    public AttractionAdapter(List<AttractionVO> attractionList, AttractionFragment.ControllerAttractionItem controllerAttractionItem) {
-        inflater = LayoutInflater.from(PADC_WEEK6_APP.getContext());
-        this.attractionList = attractionList;
-        mAttractionItemController = controllerAttractionItem;
+    public AttractionAdapter(List<AttractionVO> attractionList, AttractionViewHolder.ControllerAttractionItem controllerAttractionItem) {
+        mInflater = LayoutInflater.from(PADC_WEEK6_APP.getContext());
+        mAttractionList = attractionList;
+        mControllerAttractionItem = controllerAttractionItem;
     }
 
     @Override
     public AttractionViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = inflater.inflate(R.layout.view_item_attractions, parent, false);
-        AttractionViewHolder attractionVH = new AttractionViewHolder(view,mAttractionItemController);
-
-        return attractionVH;
+        View itemView = mInflater.inflate(R.layout.view_item_attractions, parent, false);
+        return new AttractionViewHolder(itemView, mControllerAttractionItem);
     }
 
     @Override
     public void onBindViewHolder(AttractionViewHolder holder, int position) {
-        holder.setData(attractionList.get(position));
+        holder.bindData(mAttractionList.get(position));
     }
 
     @Override
     public int getItemCount() {
-        return attractionList.size();
+        return mAttractionList.size();
     }
 
     public void setNewData(List<AttractionVO> newAttractionList) {
-        attractionList = newAttractionList;
+        mAttractionList = newAttractionList;
         notifyDataSetChanged();
     }
 }
+
