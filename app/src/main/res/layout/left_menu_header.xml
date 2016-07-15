@@ -24,26 +24,26 @@
     android:theme="@style/ThemeOverlay.AppCompat.Dark">
 
     <ImageView
-        android:id="@+id/avatar"
+        android:id="@+id/iv_avatar"
         android:layout_width="64dp"
         android:layout_height="64dp"
-        android:layout_above="@+id/tv_username"
+        android:layout_above="@+id/tv_username_left_menu_header"
         android:layout_margin="@dimen/margin_medium_2"
         android:elevation="4dp"
         tools:src="@mipmap/ic_launcher" />
 
     <TextView
-        android:id="@+id/tv_username"
+        android:id="@+id/tv_username_left_menu_header"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/email"
+        android:layout_above="@+id/tv_email_left_menu_header"
         android:layout_marginLeft="@dimen/margin_medium_2"
         android:layout_marginStart="@dimen/margin_medium_2"
         android:text="Username"
         android:textAppearance="@style/TextAppearance.AppCompat.Body2" />
 
     <TextView
-        android:id="@+id/email"
+        android:id="@+id/tv_email_left_menu_header"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_above="@+id/ll_reg_login"
@@ -70,6 +70,13 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/Register" />
+
+        <Button
+            android:id="@+id/btn_Logout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/Logout"
+            android:visibility="gone"/>
     </LinearLayout>
 
 

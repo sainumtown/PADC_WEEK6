@@ -5,7 +5,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.database.Cursor;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.design.widget.NavigationView;
@@ -30,6 +29,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -42,8 +42,10 @@ import xyz.sainumtown.padc_week6.PADC_WEEK6_APP;
 import xyz.sainumtown.padc_week6.R;
 import xyz.sainumtown.padc_week6.adapters.AttractionAdapter;
 import xyz.sainumtown.padc_week6.datas.models.AttractionModel;
+import xyz.sainumtown.padc_week6.datas.models.UserModel;
 import xyz.sainumtown.padc_week6.datas.persistence.AttractionsContract;
 import xyz.sainumtown.padc_week6.datas.vos.AttractionVO;
+import xyz.sainumtown.padc_week6.datas.vos.UserVO;
 import xyz.sainumtown.padc_week6.events.DataEvent;
 import xyz.sainumtown.padc_week6.fragments.LoginFragment;
 import xyz.sainumtown.padc_week6.fragments.RegisterFragment;
@@ -52,14 +54,41 @@ import xyz.sainumtown.padc_week6.views.holders.AttractionViewHolder;
 
 public class HomeActivity extends AppCompatActivity implements AttractionViewHolder.ControllerAttractionItem, View.OnClickListener, NavigationView.OnNavigationItemSelectedListener, LoaderManager.LoaderCallbacks<Cursor> {
 
+
+    private static String IE_USER_EMAIL = "user_email";
     DrawerLayout drawerLayout;
     NavigationView navigationView;
     FrameLayout fl;
     FrameLayout fl2;
     private AttractionAdapter mAttractionAdapter;
+
     @BindView(R.id.rv_attractions)
     RecyclerView rvAttractions;
 
+    @BindView(R.id.tv_email_left_menu_header)
+    TextView tvEmail;
+
+    @BindView(R.id.tv_username_left_menu_header)
+    TextView tvUsername;
+
+    @BindView(R.id.iv_avatar)
+    ImageView ivAvatar;
+
+    @BindView(R.id.btn_Logout)
+    Button btnLogout;
+
+    @BindView(R.id.btn_register)
+    Button btnRegister;
+
+    @BindView(R.id.btn_login)
+    Button btnLogin;
+
+
+    public static Intent newIntent(String email) {
+        Intent intent = new Intent(PADC_WEEK6_APP.getContext(), HomeActivity.class);
+        intent.putExtra(IE_USER_EMAIL, email);
+        return intent;
+    }
 
     private BroadcastReceiver mDataLoadedBroadcastReceiver = new BroadcastReceiver() {
         @Override
@@ -93,14 +122,8 @@ public class HomeActivity extends AppCompatActivity implements AttractionViewHol
 
         navigationView.setNavigationItemSelectedListener(this);
 
-
-        // btn regsiter click
-        Button btnRegister = (Button) findViewById(R.id.btn_register);
+        btnLogout.setOnClickListener(this);
         btnRegister.setOnClickListener(this);
-
-
-        // btn login click
-        Button btnLogin = (Button) findViewById(R.id.btn_login);
         btnLogin.setOnClickListener(this);
 
         // control two panels hide process
@@ -118,6 +141,26 @@ public class HomeActivity extends AppCompatActivity implements AttractionViewHol
         int gridColumnSpanCount = 1;
         rvAttractions.setLayoutManager(new GridLayoutManager(getApplicationContext(), gridColumnSpanCount));
 
+
+        // set the data to the left menu header.
+        if (getIntent().getExtras() != null) {
+            String userEmail = getIntent().getStringExtra(IE_USER_EMAIL);
+
+
+            UserVO.getUserByEmail(userEmail);
+
+            tvEmail.setText(userEmail);
+            tvUsername.setText(UserModel.getInstance().getUser().getName());
+            ivAvatar.setImageResource(R.mipmap.ic_launcher);
+
+            btnLogout.setVisibility(View.VISIBLE);
+            btnLogin.setVisibility(View.GONE);
+            btnRegister.setVisibility(View.GONE);
+        } else {
+            btnLogout.setVisibility(View.GONE);
+            btnLogin.setVisibility(View.VISIBLE);
+            btnRegister.setVisibility(View.VISIBLE);
+        }
         getSupportLoaderManager().initLoader(MyanmarAttractionsConstants.ATTRACTION_LIST_LOADER, null, this);
     }
 
@@ -145,18 +188,6 @@ public class HomeActivity extends AppCompatActivity implements AttractionViewHol
         return super.onOptionsItemSelected(item);
     }
 
-   /* @Override
-    public void onTapEvent(AttractionVO attraction, ImageView ivAttractionPhoto) {
-        Intent intent = AttractionDetailActivity.newIntent(attraction.getTitle());
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            String tsName = getResources().getString(R.string.share_element_transistion_attractioin);
-            ActivityOptionsCompat activityOption = ActivityOptionsCompat.makeSceneTransitionAnimation(this, new Pair(ivAttractionPhoto, tsName));
-            ActivityCompat.startActivity(this, intent, activityOption.toBundle());
-        } else {
-            startActivity(intent);
-        }
-    }
-*/
     @Override
     public boolean onNavigationItemSelected(final MenuItem menuItem) {
         menuItem.setChecked(true);
@@ -213,6 +244,23 @@ public class HomeActivity extends AppCompatActivity implements AttractionViewHol
                     getSupportFragmentManager().beginTransaction()
                             .replace(R.id.fl_container, loginFragment)
                             .commit();
+                    break;
+                case R.id.btn_Logout:
+                    UserVO.removeUser(UserModel.getInstance().getUser().getEmail());
+                    if (UserModel.getInstance().getUser() == null) {
+                        tvEmail.setText("");
+                        tvUsername.setText("");
+                        ivAvatar.setImageResource(0);
+
+                        btnLogout.setVisibility(View.GONE);
+                        btnLogin.setVisibility(View.VISIBLE);
+                        btnRegister.setVisibility(View.VISIBLE);
+
+                        LoginFragment loginFragment2 = LoginFragment.newInstance();
+                        getSupportFragmentManager().beginTransaction()
+                                .replace(R.id.fl_container, loginFragment2)
+                                .commit();
+                    }
                     break;
             }
         }

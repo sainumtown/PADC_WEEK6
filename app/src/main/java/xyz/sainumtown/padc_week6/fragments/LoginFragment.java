@@ -1,5 +1,6 @@
 package xyz.sainumtown.padc_week6.fragments;
 
+import android.content.Intent;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
@@ -10,9 +11,16 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.Toast;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 import xyz.sainumtown.padc_week6.R;
+import xyz.sainumtown.padc_week6.activities.HomeActivity;
 import xyz.sainumtown.padc_week6.datas.agents.retrofit.RetrofitDataAgent;
 import xyz.sainumtown.padc_week6.datas.models.UserModel;
+import xyz.sainumtown.padc_week6.datas.responses.UserResponse;
 import xyz.sainumtown.padc_week6.datas.vos.UserVO;
 
 /**
@@ -21,6 +29,7 @@ import xyz.sainumtown.padc_week6.datas.vos.UserVO;
 
 public class LoginFragment extends Fragment {
 
+    @BindView(R.id.btn_login2)
     Button btn_login;
 
     public static LoginFragment newInstance() {
@@ -40,36 +49,39 @@ public class LoginFragment extends Fragment {
                              Bundle savedInstanceState) {
         final View view = inflater.inflate(R.layout.fragment_login, container, false);
 
-        btn_login = (Button) view.findViewById(R.id.btn_login2);
+        ButterKnife.bind(this, view);
 
-        final Handler hand = new Handler();
-        final Runnable run = new Runnable() {
-            @Override
-            public void run() {
-            }
-
-        };
         btn_login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                UserVO user = new UserVO();
-                RetrofitDataAgent.getInstance().userLogin("user@gmail.com", "12345");
-                hand.postDelayed(run, 3000);
-                RetrofitDataAgent.getInstance().userLogin("user@gmail.com", "12345");
-                if (TextUtils.isEmpty(UserModel.getInstance().getUser().toString() )) {
-                    Toast.makeText(getContext(), UserModel.getInstance().getUser().getName(), Toast.LENGTH_LONG).show();
-                }else {
-                    Toast.makeText(getContext(), "Connection is not good or no connection", Toast.LENGTH_LONG).show();
-                }
 
+                Call<UserResponse> userCall = RetrofitDataAgent.getInstance().getTheApi().userLogin("username@gmail.com", "saasi");
+                userCall.enqueue(new Callback<UserResponse>() {
+                    @Override
+                    public void onResponse(Call<UserResponse> call, Response<UserResponse> response) {
+                        UserResponse userResponse = response.body();
+                        if (userResponse == null) {
+                            Toast.makeText(getContext(), "There is no user with that email", Toast.LENGTH_SHORT).show();
+                        } else {
+                            UserVO user = userResponse.getUser();
+
+                            // keep the data in persistent layer;
+                            UserVO.saveUser(user);
+                            Intent intent = HomeActivity.newIntent(user.getEmail());
+                            startActivity(intent);
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<UserResponse> call, Throwable t) {
+                        Toast.makeText(getContext(), "fail", Toast.LENGTH_SHORT).show();
+                    }
+                });
             }
         });
 
 
-
         return view;
     }
-    void  CheckLogin(){
 
-    }
 }

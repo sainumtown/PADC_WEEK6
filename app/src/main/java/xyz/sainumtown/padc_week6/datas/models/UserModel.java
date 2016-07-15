@@ -49,6 +49,10 @@ public class UserModel {
         return objInstance;
     }
 
+    public void setUser(UserVO user) {
+        this.user = user;
+    }
+
     public UserModel() {
         user = new UserVO();
         dataAgent = RetrofitDataAgent.getInstance();
@@ -71,7 +75,6 @@ public class UserModel {
     }*/
 
     public void notifyErrorInUserLogin(String message) {
-
     }
 
     public void notifyUserLoginLoaded(UserVO user) {

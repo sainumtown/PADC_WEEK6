@@ -17,6 +17,7 @@ public class AttractionsContract {
 
     public static final String PATH_ATTRACTIONS = "attractions";
     public static final String PATH_ATTRACTION_IMAGES = "attraction_images";
+    public static final String PATH_USERS = "users";
 
     public static final class AttractionEntry implements BaseColumns {
         public static final Uri CONTENT_URI =
@@ -79,6 +80,35 @@ public class AttractionsContract {
 
         public static String getAttractionTitleFromParam(Uri uri) {
             return uri.getQueryParameter(COLUMN_ATTRACTION_TITLE);
+        }
+    }
+
+    public static final class UserEntry implements BaseColumns {
+        public static final Uri CONTENT_URI =
+                BASE_CONTENT_URI.buildUpon().appendPath(PATH_USERS).build();
+
+        public static final String DIR_TYPE =
+                ContentResolver.CURSOR_DIR_BASE_TYPE + "/" + CONTENT_AUTHORITY + "/" + PATH_USERS;
+
+        public static final String ITEM_TYPE =
+                ContentResolver.CURSOR_ITEM_BASE_TYPE + "/" + CONTENT_AUTHORITY + "/" + PATH_USERS;
+
+        public static final String TABLE_NAME = "users";
+
+        public static final String COLUMN_NAME = "name";
+        public static final String COLUMN_EMAIL = "email";
+        public static final String COLUMN_ACCESS_TOKEN = "access_token";
+        public static final String COLUMN_DOB = "date_of_birth";
+        public static final String COLUMN_COUNTRY_ORIGNIN = "country_of_origin";
+
+        public static Uri buildUserUri(long id) {
+            // content://xyz.sainumtown.padc_week6/users/7
+            Uri userUri= ContentUris.withAppendedId(CONTENT_URI, id);
+            return  userUri;
+        }
+
+        public static String getUserEmailFromParam(Uri uri) {
+            return uri.getQueryParameter(COLUMN_EMAIL);
         }
     }
 }

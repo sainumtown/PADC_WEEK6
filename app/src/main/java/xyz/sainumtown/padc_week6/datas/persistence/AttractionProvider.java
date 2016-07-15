@@ -18,9 +18,12 @@ public class AttractionProvider extends ContentProvider {
 
     public static final int ATTRACTION = 100;
     public static final int ATTRACTION_IMAGE = 200;
+    public static final int ATTRACTION_USER = 300;
 
     private static final String sAttractionTitleSelection = AttractionsContract.AttractionEntry.COLUMN_TITLE + " = ?";
     private static final String sAttractionImageSelectionWithTitle = AttractionsContract.AttractionImageEntry.COLUMN_ATTRACTION_TITLE + " = ?";
+
+    private static final String sAttractionUserEmailSelection = AttractionsContract.UserEntry.COLUMN_EMAIL + " = ?";
 
     private static final UriMatcher sUriMatcher = buildUriMatcher();//1
     private AttractionDBHelper mAttractionDBHelper;
@@ -66,6 +69,20 @@ public class AttractionProvider extends ContentProvider {
                         null,
                         sortOrder);
                 break;
+            case ATTRACTION_USER:
+                String email = AttractionsContract.UserEntry.getUserEmailFromParam(uri);
+                if (email != null) {
+                    selection = sAttractionUserEmailSelection;
+                    selectionArgs = new String[]{email};
+                }
+                queryCursor = mAttractionDBHelper.getReadableDatabase().query(AttractionsContract.UserEntry.TABLE_NAME,
+                        projection,
+                        selection,
+                        selectionArgs,
+                        null,
+                        null,
+                        sortOrder);
+                break;
             default:
                 throw new UnsupportedOperationException("Unknown uri : " + uri);
         }
@@ -87,6 +104,8 @@ public class AttractionProvider extends ContentProvider {
                 return AttractionsContract.AttractionEntry.DIR_TYPE;
             case ATTRACTION_IMAGE:
                 return AttractionsContract.AttractionImageEntry.DIR_TYPE;
+            case ATTRACTION_USER:
+                return AttractionsContract.UserEntry.DIR_TYPE;
             default:
                 throw new UnsupportedOperationException("Unknown uri : " + uri);
         }
@@ -118,6 +137,16 @@ public class AttractionProvider extends ContentProvider {
                 }
                 break;
             }
+            case ATTRACTION_USER: {
+                long _id = db.insert(AttractionsContract.UserEntry.TABLE_NAME, null, contentValues);
+                if (_id > 0) {
+                    insertedUri = AttractionsContract.UserEntry.buildUserUri(_id);
+                } else {
+                    throw new SQLException("Failed to insert row into " + uri);
+                }
+                break;
+            }
+
             default:
                 throw new UnsupportedOperationException("Unknown uri : " + uri);
         }
@@ -190,7 +219,7 @@ public class AttractionProvider extends ContentProvider {
 
         uriMatcher.addURI(AttractionsContract.CONTENT_AUTHORITY, AttractionsContract.PATH_ATTRACTIONS, ATTRACTION);
         uriMatcher.addURI(AttractionsContract.CONTENT_AUTHORITY, AttractionsContract.PATH_ATTRACTION_IMAGES, ATTRACTION_IMAGE);
-
+        uriMatcher.addURI(AttractionsContract.CONTENT_AUTHORITY, AttractionsContract.PATH_USERS, ATTRACTION_USER);
         return uriMatcher;
     }
 
@@ -202,7 +231,8 @@ public class AttractionProvider extends ContentProvider {
                 return AttractionsContract.AttractionEntry.TABLE_NAME;
             case ATTRACTION_IMAGE:
                 return AttractionsContract.AttractionImageEntry.TABLE_NAME;
-
+            case ATTRACTION_USER:
+                return AttractionsContract.UserEntry.TABLE_NAME;
             default:
                 throw new UnsupportedOperationException("Unknown uri : " + uri);
         }

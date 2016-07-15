@@ -26,6 +26,10 @@ public class RetrofitDataAgent implements AttractionDataAgent {
 
     private final AttractionApi theApi;
 
+    public AttractionApi getTheApi() {
+        return theApi;
+    }
+
     private RetrofitDataAgent() {
         final OkHttpClient okHttpClient = new OkHttpClient.Builder()
                 .connectTimeout(15, TimeUnit.SECONDS)
@@ -70,25 +74,5 @@ public class RetrofitDataAgent implements AttractionDataAgent {
         });
     }
 
-    @Override
-    public void userLogin(String email, String password) {
-        Call<UserResponse> userLoginCall = theApi.userLogin(email,password);
-        userLoginCall.enqueue(new Callback<UserResponse>() {
-            @Override
-            public void onResponse(Call<UserResponse> call, Response<UserResponse> response) {
-                UserResponse userResponse = response.body();
-                if(userResponse == null){
-                    UserModel.getInstance().notifyErrorInUserLogin(response.message());
-                }else{
-                    UserModel.getInstance().notifyUserLoginLoaded(userResponse.getUser());
-                }
-            }
 
-            @Override
-            public void onFailure(Call<UserResponse> call, Throwable t) {
-                AttractionModel.getInstance().notifyErrorInLoadingAttractions(t.getMessage());
-            }
-        });
-
-    }
 }
