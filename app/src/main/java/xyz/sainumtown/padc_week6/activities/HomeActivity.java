@@ -84,6 +84,8 @@ public class HomeActivity extends AppCompatActivity implements AttractionViewHol
     Button btnLogin;
 
 
+
+
     public static Intent newIntent(String email) {
         Intent intent = new Intent(PADC_WEEK6_APP.getContext(), HomeActivity.class);
         intent.putExtra(IE_USER_EMAIL, email);
@@ -129,10 +131,7 @@ public class HomeActivity extends AppCompatActivity implements AttractionViewHol
         // control two panels hide process
         fl = (FrameLayout) findViewById(R.id.fl_container);
         fl2 = (FrameLayout) findViewById(R.id.fl_container_2);
-        if (fl2 != null) {
-            btnRegister.setText(R.string.lbl_login_register);
-            btnLogin.setVisibility(View.GONE);
-        }
+
 
         List<AttractionVO> attractionList = AttractionModel.getInstance().getAttractionList();
         mAttractionAdapter = new AttractionAdapter(attractionList, this);
@@ -166,6 +165,18 @@ public class HomeActivity extends AppCompatActivity implements AttractionViewHol
             getSupportFragmentManager().beginTransaction()
                     .replace(R.id.fl_container, fragment)
                     .commit();
+            fl.setVisibility(View.VISIBLE);
+
+        }
+
+        if (fl2 != null) {
+            btnRegister.setText(R.string.lbl_login_register);
+            btnLogin.setVisibility(View.GONE);
+            LoginFragment fragment = LoginFragment.newInstance();
+            getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.fl_container_2, fragment)
+                    .commit();
+            fl2.setVisibility(View.VISIBLE);
 
         }
         getSupportLoaderManager().initLoader(MyanmarAttractionsConstants.ATTRACTION_LIST_LOADER, null, this);

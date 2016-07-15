@@ -26,4 +26,12 @@ public interface AttractionApi {
             @Field(MyanmarAttractionsConstants.PARAM_EMAIL) String email,
             @Field(MyanmarAttractionsConstants.PARAM_PASSWORD) String password);
 
+    @FormUrlEncoded
+    @POST(MyanmarAttractionsConstants.API_USER_REGISTER)
+    Call<UserResponse> userRegister(
+            @Field(MyanmarAttractionsConstants.PARAM_EMAIL) String email,
+            @Field(MyanmarAttractionsConstants.PARAM_PASSWORD) String password,
+            @Field(MyanmarAttractionsConstants.PARAM_DOB) String dob,
+            @Field(MyanmarAttractionsConstants.PARAM_REGION) String region,
+            @Field(MyanmarAttractionsConstants.PARAM_NAME)String name);
 }
