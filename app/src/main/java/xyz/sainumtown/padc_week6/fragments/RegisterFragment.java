@@ -79,9 +79,11 @@ public class RegisterFragment extends Fragment {
                             Toast.makeText(getContext(), "There is no user with that email", Toast.LENGTH_SHORT).show();
                         } else {
                             UserVO user = userResponse.getUser();
-                            if (String.valueOf(userResponse.getCode()) == "401") {
+
+                            if (String.valueOf(userResponse.getCode()).equals("401")) {
                                 Toast.makeText(getContext(),userResponse.getMessage(),Toast.LENGTH_SHORT).show();
                             } else {
+                                Toast.makeText(getContext(), userResponse.getMessage(), Toast.LENGTH_SHORT).show();
                                 // keep the data in persistent layer;
                                 UserVO.saveUser(user);
                                 Intent intent = HomeActivity.newIntent(user.getEmail());

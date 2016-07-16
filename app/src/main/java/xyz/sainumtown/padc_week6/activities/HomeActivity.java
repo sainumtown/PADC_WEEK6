@@ -84,8 +84,6 @@ public class HomeActivity extends AppCompatActivity implements AttractionViewHol
     Button btnLogin;
 
 
-
-
     public static Intent newIntent(String email) {
         Intent intent = new Intent(PADC_WEEK6_APP.getContext(), HomeActivity.class);
         intent.putExtra(IE_USER_EMAIL, email);
@@ -215,8 +213,9 @@ public class HomeActivity extends AppCompatActivity implements AttractionViewHol
             @Override
             public void run() {
                 switch (menuItem.getItemId()) {
+
                     case R.id.left_menu_attractions:
-                        if (getIntent().getExtras() == null) {
+                        if (getIntent().getExtras() == null || UserModel.getInstance().getUser() ==null) {
                             RegisterFragment fragment = RegisterFragment.newInstance();
                             getSupportFragmentManager().beginTransaction()
                                     .replace(R.id.fl_container, fragment)
@@ -227,7 +226,7 @@ public class HomeActivity extends AppCompatActivity implements AttractionViewHol
                         }
 
                         if (fl2 != null) {
-                            fl2.setVisibility(View.GONE);
+                            fl2.setVisibility(View.VISIBLE);
                         }
                         break;
                 }
@@ -253,6 +252,19 @@ public class HomeActivity extends AppCompatActivity implements AttractionViewHol
             getSupportFragmentManager().beginTransaction()
                     .replace(R.id.fl_container, fragment)
                     .commit();
+            if (R.id.btn_Logout == v.getId()) {
+                UserVO.removeUser(UserModel.getInstance().getUser().getEmail());
+                if (UserModel.getInstance().getUser() == null) {
+                    tvEmail.setText("");
+                    tvUsername.setText("");
+                    ivAvatar.setImageResource(0);
+
+                    btnLogout.setVisibility(View.GONE);
+                    btnLogin.setVisibility(View.GONE);
+                    btnRegister.setVisibility(View.VISIBLE);
+                    btnRegister.setText("Register or login");
+                }
+            }
 
         } else {
             int id = v.getId();

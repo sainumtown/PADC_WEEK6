@@ -63,7 +63,7 @@ public class LoginFragment extends Fragment {
             @Override
             public void onClick(View v) {
 
-                Call<UserResponse> userCall = RetrofitDataAgent.getInstance().getTheApi().userLogin(etMail.getText().toString(),etPassword.getText().toString());
+                Call<UserResponse> userCall = RetrofitDataAgent.getInstance().getTheApi().userLogin(etMail.getText().toString(), etPassword.getText().toString());
                 userCall.enqueue(new Callback<UserResponse>() {
                     @Override
                     public void onResponse(Call<UserResponse> call, Response<UserResponse> response) {
@@ -72,11 +72,16 @@ public class LoginFragment extends Fragment {
                             Toast.makeText(getContext(), "There is no user with that email", Toast.LENGTH_SHORT).show();
                         } else {
                             UserVO user = userResponse.getUser();
+                            if (String.valueOf(userResponse.getCode()).equals("401")) {
+                                Toast.makeText(getContext(), userResponse.getMessage(), Toast.LENGTH_SHORT).show();
 
-                            // keep the data in persistent layer;
-                            UserVO.saveUser(user);
-                            Intent intent = HomeActivity.newIntent(user.getEmail());
-                            startActivity(intent);
+                            } else {
+                                // keep the data in persistent layer;
+                                Toast.makeText(getContext(), userResponse.getMessage(), Toast.LENGTH_SHORT).show();
+                                UserVO.saveUser(user);
+                                Intent intent = HomeActivity.newIntent(user.getEmail());
+                                startActivity(intent);
+                            }
                         }
                     }
 
