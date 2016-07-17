@@ -81,6 +81,7 @@ public class UserModel {
     public void notifyUserLoginLoaded(UserVO user) {
         this.user = user;
         if (user != null) {
+            // persistence layer
             UserVO.saveUser(user);
         }
         broadcastUserLoadedWithEventBus();
