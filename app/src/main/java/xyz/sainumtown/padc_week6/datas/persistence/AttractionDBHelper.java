@@ -11,7 +11,7 @@ import xyz.sainumtown.padc_week6.datas.persistence.AttractionsContract.*;
  */
 public class AttractionDBHelper extends SQLiteOpenHelper {
 
-    private static final int DATABASE_VERSION = 8;
+    private static final int DATABASE_VERSION = 9;
     public static final String DATABASE_NAME = "attractions.db";
 
     private static final String SQL_CREATE_ATTRACTION_TABLE = "CREATE TABLE " + AttractionsContract.AttractionEntry.TABLE_NAME + " (" +
@@ -38,7 +38,7 @@ public class AttractionDBHelper extends SQLiteOpenHelper {
             UserEntry.COLUMN_COUNTRY_ORIGNIN + " TEXT NOT NULL, "+
             UserEntry.COLUMN_ACCESS_TOKEN + " TEXT NOT NULL, "+
 
-            " UNIQUE (" + UserEntry.COLUMN_EMAIL + ") ON CONFLICT IGNORE" +
+            " UNIQUE (" + UserEntry.COLUMN_EMAIL + ") ON CONFLICT REPLACE" +
             " );";
 
     public AttractionDBHelper(Context context) {

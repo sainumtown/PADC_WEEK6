@@ -29,5 +29,22 @@ public class DataEvent {
         }
     }
 
-    
+
+    public static class UserDataLoadedEvent {
+        private String extraMessage;
+        private UserVO user;
+
+        public UserDataLoadedEvent(String extraMessage, UserVO user) {
+            this.extraMessage = extraMessage;
+            this.user = user;
+        }
+
+        public String getExtraMessage() {
+            return extraMessage;
+        }
+
+        public UserVO getUser() {
+            return user;
+        }
+    }
 }

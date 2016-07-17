@@ -74,5 +74,45 @@ public class RetrofitDataAgent implements AttractionDataAgent {
         });
     }
 
+    @Override
+    public void login(String email, String password) {
+        Call<UserResponse> userCall = theApi.userLogin(email, password);
+        userCall.enqueue(new Callback<UserResponse>() {
+            @Override
+            public void onResponse(Call<UserResponse> call, Response<UserResponse> response) {
+                UserResponse userResponse = response.body();
+                if (userResponse == null) {
+                    UserModel.getInstance().notifyErrorInUserLogin(response.message());
+                } else {
+                    UserModel.getInstance().notifyUserLoginLoaded(userResponse.getUser());
+                }
+            }
 
+            @Override
+            public void onFailure(Call<UserResponse> call, Throwable t) {
+                UserModel.getInstance().notifyErrorInUserLogin(t.getMessage());
+            }
+        });
+    }
+
+    @Override
+    public void register(String email, String password, String dob, String region, String name) {
+        Call<UserResponse> userCall = theApi.userRegister(email, password, dob, region, name);
+        userCall.enqueue(new Callback<UserResponse>() {
+            @Override
+            public void onResponse(Call<UserResponse> call, Response<UserResponse> response) {
+                UserResponse userResponse = response.body();
+                if (userResponse == null) {
+                    UserModel.getInstance().notifyErrorInUserLogin(response.message());
+                } else {
+                    UserModel.getInstance().notifyUserLoginLoaded(userResponse.getUser());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<UserResponse> call, Throwable t) {
+                UserModel.getInstance().notifyErrorInUserLogin(t.getMessage());
+            }
+        });
+    }
 }

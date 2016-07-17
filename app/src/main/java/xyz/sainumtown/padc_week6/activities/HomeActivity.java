@@ -52,7 +52,7 @@ import xyz.sainumtown.padc_week6.fragments.RegisterFragment;
 import xyz.sainumtown.padc_week6.utils.MyanmarAttractionsConstants;
 import xyz.sainumtown.padc_week6.views.holders.AttractionViewHolder;
 
-public class HomeActivity extends AppCompatActivity implements AttractionViewHolder.ControllerAttractionItem, View.OnClickListener, NavigationView.OnNavigationItemSelectedListener, LoaderManager.LoaderCallbacks<Cursor> {
+public class HomeActivity extends AppCompatActivity implements LoginFragment.UserController,RegisterFragment.UserController, AttractionViewHolder.ControllerAttractionItem, View.OnClickListener, NavigationView.OnNavigationItemSelectedListener, LoaderManager.LoaderCallbacks<Cursor> {
 
 
     private static String IE_USER_EMAIL = "user_email";
@@ -370,5 +370,15 @@ public class HomeActivity extends AppCompatActivity implements AttractionViewHol
         ActivityOptionsCompat activityOptions = ActivityOptionsCompat.makeSceneTransitionAnimation(this,
                 new Pair(ivAttraction, getString(R.string.share_element_transistion_attractioin)));
         ActivityCompat.startActivity(this, intent, activityOptions.toBundle());
+    }
+
+    @Override
+    public void onTapLogin(String email,String password) {
+        UserModel.getInstance().login(email,password);
+    }
+
+    @Override
+    public void onTapRegister(String email, String password, String dob, String region, String name) {
+        UserModel.getInstance().Register(email,password,dob,region,name);
     }
 }

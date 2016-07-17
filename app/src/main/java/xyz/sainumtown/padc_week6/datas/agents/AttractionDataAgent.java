@@ -5,5 +5,7 @@ package xyz.sainumtown.padc_week6.datas.agents;
  */
 public interface AttractionDataAgent {
     void loadAttractions();
+    void login(String email,String passsword);
+    void register(String email, String password, String dob, String region, String name);
 }
 

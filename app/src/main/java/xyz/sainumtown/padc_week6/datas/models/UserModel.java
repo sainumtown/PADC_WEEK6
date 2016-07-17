@@ -78,7 +78,22 @@ public class UserModel {
     }
 
     public void notifyUserLoginLoaded(UserVO user) {
-        user = user;
+        this.user = user;
+        if (user != null) {
+            UserVO.saveUser(user);
+        }
+        broadcastUserLoadedWithEventBus();
     }
 
+    private void broadcastUserLoadedWithEventBus() {
+        EventBus.getDefault().post(new DataEvent.UserDataLoadedEvent("extra-in-broadcast", user));
+    }
+
+    public static void Register(String email, String password, String dob, String region, String name) {
+        RetrofitDataAgent.getInstance().register(email, password, dob, region, name);
+    }
+
+    public static void login(String email, String password) {
+        RetrofitDataAgent.getInstance().login(email, password);
+    }
 }
